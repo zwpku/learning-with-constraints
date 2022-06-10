@@ -13,6 +13,8 @@
 #     name: python3
 # ---
 
+# ## This notebook defines constrained problems 
+
 # +
 import numpy as np
 import torch
@@ -28,6 +30,10 @@ def create_sequential_nn(layer_dims, activation=torch.nn.Tanh()):
         layers.add_module(f'acti {i+1}', activation)
     layers.add_module('last', torch.nn.Linear(layer_dims[-2], layer_dims[-1])) 
     return layers
+
+
+# -
+# ## The first problem is very simple 
 
 class SimpleTest():   
     def __init__(self, r=1.0):
@@ -48,7 +54,8 @@ class SimpleTest():
         return 0.5 * (model.x[0]**2 + (model.x[0] + model.x[1])**2 - self.r).reshape((1))
 #        return 0.5 * (model.x[0]**2 - self.r).reshape((1))
     
-     
+# ### The second one is a Possion equation on $[0,1]^2$ with PINN loss
+
 class PoissonEqnByPINN():
         
     def __init__(self, u_coeff=1.0, size=2000, size_each_bndry=1000):    
@@ -147,6 +154,7 @@ class PoissonEqnByPINN():
 
         return data_whole    
     
+# ### The third one is an eigenvalue PDE in $\mathbb{R}^2$
 
 class EigenPDE():
     def __init__(self, pot_V, beta, num_eig_funcs=1, eig_w=[1.0], size=2000, size_each_bndry=1000):    
@@ -254,7 +262,5 @@ class EigenPDE():
         data_whole = np.concatenate([data_whole, data])
 
         return data_whole    
-
-# -
 
 
