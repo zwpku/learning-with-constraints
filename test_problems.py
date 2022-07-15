@@ -53,18 +53,18 @@ class SimpleTest():
     def G(self, model, X=None):
         return 0.5 * (model.x[0]**2 + (model.x[0] + model.x[1])**2 - self.r).reshape((1))
 #        return 0.5 * (model.x[0]**2 - self.r).reshape((1))
-    
+
 # ### The second one is a Possion equation on $[0,1]^2$ with PINN loss
 
 class PoissonEqnByPINN():
         
-    def __init__(self, u_coeff=1.0, size=2000, size_each_bndry=1000):    
+    def __init__(self, u_coeff=1.0, size=2000, size_each_bndry=1000, seed=100):    
         # This parameter affects the magnitude of the gradients of the solution.
         # Increasing its value makes the training more difficult.
         self.X = self.sample_data_domain(size)
         self.Y = self.sample_data_boundary(size_each_bndry)
         self.ref_u = self.ref_u_nn(u_coeff)
-        self.rng = np.random.default_rng()
+        self.rng = np.random.default_rng(seed)
         self.X_batch = None
         self.Y_batch = None
         
@@ -153,7 +153,7 @@ class PoissonEqnByPINN():
         data_whole = np.concatenate([data_whole, data])
 
         return data_whole    
-    
+
 # ### The third one is an eigenvalue PDE in $\mathbb{R}^2$
 
 class EigenPDE():
